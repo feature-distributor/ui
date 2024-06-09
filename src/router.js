@@ -1,30 +1,35 @@
-import { createWebHistory , createRouter } from 'vue-router'
+import { createWebHistory, createRouter } from "vue-router";
 
-import App from './App.vue'
-import NotFound from './views/NotFound.vue'
-import ProjectListView from './views/ProjectListView.vue'
-import ProjectDetailView from './views/ProjectDetailView.vue'
-  
+import App from "./App.vue";
+import NotFound from "./views/NotFound.vue";
+import LoginView from "./views/LoginView.vue";
+import ProjectListView from "./views/ProjectListView.vue";
+import ProjectDetailView from "./views/ProjectDetailView.vue";
+
 export const router = createRouter({
-  history: createWebHistory (),
+  history: createWebHistory(),
   routes: [
     {
-        path: '/',
-        component: NotFound,
+      path: "/",
+      component: NotFound,
     },
     {
-        path: '/projects',
-        component: ProjectListView,
+      path: "/login",
+      component: LoginView,
     },
     {
-        path: '/project/:id',
-        component: ProjectDetailView,
-        props: true,
+      path: "/projects",
+      component: ProjectListView,
     },
     {
-        path: '/:pathMatch(.*)*',
-        name: 'NotFound',
-        component: NotFound,
+      path: "/project/:id",
+      component: ProjectDetailView,
+      props: true,
+    },
+    {
+      path: "/:pathMatch(.*)*",
+      name: "NotFound",
+      component: NotFound,
     },
   ],
-})
+});
