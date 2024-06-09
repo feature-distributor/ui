@@ -1,9 +1,9 @@
 <template>
     <v-responsive class="border rounded" max-height="300">
         <v-app>
-            <AppBar :rail="rail" @onHomeClick="onHomeClick" />
-
             <Nav :rail="rail" @changeRail="changeRail" />
+
+            <AppBar :tab="tab" :tabs="tabs" @onHomeClick="onHomeClick" />
 
             <v-main>
                 <v-container>
@@ -18,6 +18,12 @@
 export default {
     data: () => ({
         rail: true,
+        tab: '1',
+        projects: [
+            { id: 1, title: 'Project 1', href: '#project-1' },
+            { id: 2, title: 'Project 2', href: '#project-2' },
+            { id: 3, title: 'Project 3', href: '#project-3' },
+        ],
     }),
     methods: {
         onHomeClick() {
