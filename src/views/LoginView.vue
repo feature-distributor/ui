@@ -44,8 +44,6 @@ export default {
                 username: this.username,
                 password: this.password,
             }).then(data => {
-                localStorage.setItem("token", data.token)
-
                 this.$router.push('/projects')
             }).catch(error => {
                 console.log(error)

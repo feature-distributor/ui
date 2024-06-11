@@ -19,6 +19,10 @@ service.interceptors.request.use(
 service.interceptors.response.use(
   (response) => {
     if (response.status >= 400) {
+      if (response.status == 401) {
+        localStorage.removeItem("token");
+        return Promise.reject(new Error(UNAUTHORIZED));
+      }
       console.log(response.data);
       return Promise.reject(new Error(response.data.message || "Error"));
     } else {
@@ -32,3 +36,5 @@ service.interceptors.response.use(
 );
 
 export default service;
+
+export let UNAUTHORIZED = 401;
