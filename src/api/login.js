@@ -34,10 +34,3 @@ export async function logout() {
     localStorage.removeItem("sessionUser");
   }
 }
-
-export function getProjectList() {
-  return request({
-    url: "/api/rest/project/list/v1",
-    method: "get",
-  });
-}

@@ -1,10 +1,11 @@
 <template>
+    <Loading :loading="loading" />
     <v-item-group mandatory>
         <v-container>
             <v-row>
                 <v-col cols="12">
                     <v-item v-for="item in items" :key="item.id">
-                        <v-item-title>{{ item.title }}</v-item-title>
+                        <v-item-title>{{ item.name }}</v-item-title>
                         <v-item-action>
                             <v-btn @click="onProjectSelected(item)">查看</v-btn>
                         </v-item-action>
@@ -16,14 +17,25 @@
 </template>
 
 <script>
+import { getProjectList } from "../api/project";
+
 export default {
     data: () => ({
+        loading: false,
         items: [
-            { id: 1, title: '项目 1' },
-            { id: 2, title: '项目 2' },
-            { id: 3, title: '项目 3' },
         ],
     }),
+    mounted() {
+        this.loading = true
+
+        getProjectList().then(data => {
+            this.items = data.data;
+        }).catch(error => {
+            console.log(error)
+        }).finally(() => {
+            this.loading = false
+        });
+    },
     methods: {
         onProjectSelected(project) {
             this.$router.push('/projects/' + project.id)
