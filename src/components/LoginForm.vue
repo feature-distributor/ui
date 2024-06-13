@@ -54,7 +54,7 @@ export default {
                 username: this.username,
                 password: this.password,
             }).then(data => {
-                this.$router.push('/')
+                this.$router.push('/projects')
             }).catch(error => {
                 console.log(error)
             }).finally(() => {

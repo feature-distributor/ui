@@ -1,5 +1,4 @@
 <template>
-    <Breadcrumbs :subItems="breadcrumbs" />
     <v-card class="ma-2" elevated>
         <v-card-text>
             <h2>{{ project?.title }}</h2>
@@ -11,13 +10,15 @@
 <script>
 export default {
     props: {
-        project: Object,
+        id: String,
     },
-data: () => ({
-        breadcrumbs: [
-            { title: '项目', href: '/projects' },
-            { title: '项目详情' },
-        ],
-    }),
+    computed: {
+        project() {
+            return {
+                id: this.$route.params.id,
+                title: '项目 ' + this.$route.params.id,
+            }
+        }
+    },
 }
 </script>

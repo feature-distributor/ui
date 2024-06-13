@@ -1,5 +1,6 @@
 <template>
-    <v-app-bar color="primary" prominent>
+    <v-app-bar color="primary" prominent elevate>
+        <v-img max-height="36" max-width="256" src="/logo.svg"></v-img>
         <v-app-bar-nav-icon size="small" icon="fas fa-bars" variant="text"
             @click.stop="onHomeClick()"></v-app-bar-nav-icon>
         <v-toolbar-title>{{ title }}</v-toolbar-title>

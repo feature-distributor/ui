@@ -1,12 +1,10 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import App from "./App.vue";
 import NotFound from "./views/NotFound.vue";
 import LoginView from "./views/LoginView.vue";
-import ProjectListView from "./views/ProjectListView.vue";
-import ProjectDetailView from "./views/ProjectDetailView.vue";
-import { me } from "./api/login";
-import { ca } from "vuetify/locale";
+import ProjectView from "./views/ProjectView.vue";
+import ProjectList from "./components/ProjectList.vue";
+import ProjectDetail from "./components/ProjectDetail.vue";
 
 export const router = createRouter({
   history: createWebHistory(),
@@ -14,19 +12,44 @@ export const router = createRouter({
     {
       path: "/",
       component: NotFound,
+      meta: {
+        title: "首页",
+        showInbreadcrumb: true,
+      },
     },
     {
       path: "/login",
       component: LoginView,
+      meta: {
+        showInbreadcrumb: false,
+      },
     },
     {
       path: "/projects",
-      component: ProjectListView,
-    },
-    {
-      path: "/project/:id",
-      component: ProjectDetailView,
-      props: true,
+      component: ProjectView,
+      name: 'projects',
+      meta: {
+        title: "项目",
+        showInbreadcrumb: true,
+      },
+      children: [
+        {
+          path: "",
+          component: ProjectList,
+          meta: {
+            showInbreadcrumb: false,
+          },
+        },
+        {
+          path: ":id",
+          component: ProjectDetail,
+          props: true,
+          meta: {
+            title: "详情",
+            showInbreadcrumb: true,
+          },
+        },
+      ],
     },
     {
       path: "/:pathMatch(.*)*",
@@ -36,27 +59,13 @@ export const router = createRouter({
   ],
 });
 
-router.beforeEach(async (to, from, next) => {
-  console.log(to.path);
+router.beforeEach(async (to, _from, next) => {
   if (to.path === "/login") {
     next();
     return;
   }
-  let token = localStorage.getItem("token");
-  if (!token) {
-    console.log("no token");
-    next("/login");
-    return;
-  }
-  //检测token是否过期
-  try {
-    await me();
-  } catch (e) {
-    if (e.message === UNAUTHORIZED){
-      next("/login");
-      return;
-    }
-    console.log(e);
+  let sessionUser = localStorage.getItem("sessionUser");
+  if (!sessionUser) {
     next("/login");
     return;
   }
