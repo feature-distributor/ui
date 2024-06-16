@@ -7,15 +7,18 @@ export function me() {
   });
 }
 
-export async function login(data) {
+export async function login({ username, password }) {
   const res = await request({
     url: "/api/rest/user/login/v1",
     method: "post",
-    data,
+    data: {
+      username: username,
+      password: password,
+    },
   });
   const sessionUser = {
     token: res.token,
-    username: data.username,
+    username: username,
   };
   localStorage.setItem("sessionUser", JSON.stringify(sessionUser));
 }

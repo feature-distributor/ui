@@ -5,8 +5,16 @@
  */
 
 // Plugins
-import vuetify from './vuetify'
+import vuetify from "./vuetify";
+import VueClipboard from "vue-clipboard2";
+import ToastPlugin from "vue-toast-notification";
+import 'vue-toast-notification/dist/theme-default.css';
 
-export function registerPlugins (app) {
-  app.use(vuetify)
+export function registerPlugins(app) {
+  app.use(vuetify);
+  app.use(VueClipboard);
+  app.use(ToastPlugin, {
+    position: "top",
+    duration: 2000,
+  });
 }

@@ -6,7 +6,6 @@
             <Nav :rail="rail" @onLogout="onLogout" />
 
             <v-main>
-                <Breadcrumbs />
                 <slot></slot>
             </v-main>
         </v-app>

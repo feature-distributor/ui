@@ -45,7 +45,6 @@ export default {
             },
         ],
     }),
-
     methods: {
         onSubmit() {
             this.loading = true

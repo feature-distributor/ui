@@ -7,7 +7,11 @@ const service = axios.create({
 
 service.interceptors.request.use(
   (config) => {
-    config.headers["Authorization"] = localStorage.getItem("token");
+    let sessionUser = localStorage.getItem("sessionUser");
+    if (sessionUser) {
+      sessionUser = JSON.parse(sessionUser);
+      config.headers["Authorization"] = sessionUser.token;
+    }
     return config;
   },
   (error) => {
@@ -18,23 +22,19 @@ service.interceptors.request.use(
 
 service.interceptors.response.use(
   (response) => {
-    if (response.status >= 400) {
-      if (response.status == 401) {
-        localStorage.removeItem("token");
-        return Promise.reject(new Error(UNAUTHORIZED));
-      }
-      console.log(response.data);
-      return Promise.reject(new Error(response.data.message || "Error"));
-    } else {
-      return response.data;
-    }
+    return response.data;
   },
   (error) => {
-    console.log("err" + error);
-    return Promise.reject(error);
+    console.log("err: " + error);
+    if (error.response.status == 401) {
+      localStorage.removeItem("sessionUser");
+      window.location.href = "/login";
+      return Promise.reject(new Error(UNAUTHORIZED));
+    }
+    return Promise.reject(error.response.data);
   }
 );
 
 export default service;
 
-export let UNAUTHORIZED = 401;
+export let UNAUTHORIZED = "Unauthorized";

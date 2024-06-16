@@ -1,4 +1,5 @@
 <template>
+    <Breadcrumbs />
     <v-card class="ma-2" elevated>
         <v-card-text>
             <h2>{{ project?.title }}</h2>
