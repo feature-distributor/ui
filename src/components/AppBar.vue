@@ -7,7 +7,7 @@
 
         <v-spacer></v-spacer>
 
-        <v-btn icon="fas fa-ellipsis-vertical" variant="text"></v-btn>
+        <v-switch @click="toggleTheme" hide-details inset></v-switch>
     </v-app-bar>
 </template>
 
@@ -21,5 +21,14 @@ export default {
             this.$emit('onHomeClick')
         },
     }
+}
+</script>
+<script setup>
+import { useTheme } from 'vuetify'
+
+const theme = useTheme()
+
+function toggleTheme() {
+    theme.global.name.value = theme.global.current.value.dark ? 'light' : 'dark'
 }
 </script>

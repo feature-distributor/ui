@@ -21,3 +21,13 @@ export function createProject({ name, key }) {
     },
   });
 }
+
+export function getProject({ id }) {
+  return request({
+    url: `/api/rest/project/v1`,
+    method: "get",
+    params: {
+      id: id,
+    },
+  });
+}

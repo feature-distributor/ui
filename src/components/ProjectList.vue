@@ -7,8 +7,7 @@
                     <v-toolbar class="px-2">
                         <Breadcrumbs />
                         <v-spacer></v-spacer>
-                        <v-btn size="x-large" variant="tonal" density="comfortable" color="primary"
-                            v-bind="activatorProps">创建项目</v-btn>
+                        <v-btn size="small" variant="tonal" color="primary" v-bind="activatorProps">创建项目</v-btn>
                     </v-toolbar>
                 </template>
                 <template v-slot:default="{ items }">
