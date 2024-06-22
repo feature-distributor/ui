@@ -8,7 +8,8 @@
 import vuetify from "./vuetify";
 import VueClipboard from "vue-clipboard2";
 import ToastPlugin from "vue-toast-notification";
-import 'vue-toast-notification/dist/theme-default.css';
+import "vue-toast-notification/dist/theme-default.css";
+import confirm from "./confirm";
 
 export function registerPlugins(app) {
   app.use(vuetify);
@@ -17,4 +18,5 @@ export function registerPlugins(app) {
     position: "top",
     duration: 2000,
   });
+  app.use(confirm, { vuetify });
 }

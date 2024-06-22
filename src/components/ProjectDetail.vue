@@ -5,16 +5,15 @@
             <v-toolbar class="px-2">
                 <Breadcrumbs />
                 <v-spacer></v-spacer>
-                <v-btn id="activator-create" size="small" variant="tonal" color="primary"
-                    v-bind="activatorProps">新增开关</v-btn>
+                <v-btn id="activator-create" size="small" variant="tonal" color="primary">新增开关</v-btn>
             </v-toolbar>
             <v-card class="ma-2" elevated>
                 <v-card-text>
                     <h2>{{ project?.name }}</h2>
-                    <p>这是项目ID: {{ project?.id }}</p>
-                    <p>这是项目唯一标识符: {{ project?.key }}</p>
-                    <p>这是服务端密钥: {{ project?.server_key }}</p>
-                    <p>这是客户端密钥: {{ project?.client_key }}</p>
+                    <p>项目ID: {{ project?.id }}</p>
+                    <p>项目唯一标识符: {{ project?.key }}</p>
+                    <p>服务端密钥: {{ project?.server_key }}</p>
+                    <p>客户端密钥: {{ project?.client_key }}</p>
                 </v-card-text>
             </v-card>
             <v-pagination v-model="index" :length="totalPages"></v-pagination>
@@ -52,10 +51,8 @@
                 </template>
                 <template v-slot:item.operation>
                     <div>
-                        <v-btn id="activator-edit" size="small" variant="text" color="primary"
-                            v-bind="activatorProps">编辑</v-btn>
-                        <v-btn id="activator-delete" size="small" variant="text" color="primary"
-                            v-bind="activatorProps">删除</v-btn>
+                        <v-btn id="activator-edit" size="small" variant="text" color="primary">编辑</v-btn>
+                        <v-btn id="activator-delete" size="small" variant="text" color="primary">删除</v-btn>
                     </div>
                 </template>
             </v-data-table-server>
@@ -68,7 +65,7 @@
                 <v-card-text>
                     <v-text-field v-model="createProjectName" variant="underlined" :readonly="createLoading"
                         color="primary" density="comfortable" :rules="createProjectNameRules" label="项目名称"
-                        placeholder="请输入项目名称"></v-text-field>
+                        placeholder="请输入开关标识"></v-text-field>
 
                     <v-text-field v-model="createProjectKey" variant="underlined" :readonly="createLoading"
                         color="primary" density="comfortable" :rules="createProjectKeyRules" label="项目唯一标识符"
