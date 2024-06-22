@@ -36,6 +36,23 @@
                     </p>
                 </v-sheet>
             </v-card-text>
+            <v-card-actions>
+              <v-spacer></v-spacer>
+
+              <v-btn
+                color="medium-emphasis"
+                icon="fas fa-pen-to-square"
+                size="small"
+                @click.stop="editProject"
+              ></v-btn>
+
+              <v-btn
+                color="medium-emphasis"
+                icon="fas fa-trash-can"
+                size="small"
+                @click.stop="deleteProject"
+              ></v-btn>
+            </v-card-actions>
         </v-card-item>
     </v-card>
 </template>
@@ -63,7 +80,13 @@ export default {
             if (b) {
                 this.tooltipText = '点击复制';
             }
-        }
+        },
+        editProject() {
+            this.$emit('editProject');
+        },
+        deleteProject() {
+            this.$emit('deleteProject');
+        },
     }
 }
 </script>
