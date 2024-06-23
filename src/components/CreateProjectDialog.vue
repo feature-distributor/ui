@@ -3,11 +3,11 @@
         <template v-slot:default="">
             <v-card title="创建项目">
                 <v-card-text>
-                    <v-text-field v-model="projectName" variant="underlined" color="primary" density="comfortable"
-                        :rules="projectNameRules" label="项目名称" placeholder="请输入项目名称"></v-text-field>
+                    <v-text-field v-model="projectName" variant="solo-filled" density="comfortable"
+                        :rules="projectNameRules" label="项目名称" placeholder="请输入项目名称" flat></v-text-field>
 
-                    <v-text-field v-model="projectKey" variant="underlined" color="primary" density="comfortable"
-                        :rules="projectKeyRules" label="项目唯一标识符" placeholder="请输入项目唯一标识符"></v-text-field>
+                    <v-text-field v-model="projectKey" variant="solo-filled" density="comfortable"
+                        :rules="projectKeyRules" label="项目唯一标识符" placeholder="请输入项目唯一标识符" flat></v-text-field>
                 </v-card-text>
 
                 <template v-slot:actions>

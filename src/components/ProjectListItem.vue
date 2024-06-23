@@ -6,7 +6,7 @@
                 项目唯一标识符: {{ item.key }}
             </v-card-subtitle>
             <v-card-text>
-                <v-sheet :elevation="1" class="mx-auto rounded-lg pa-2" color="cyan-lighten-5">
+                <v-sheet class="mx-auto rounded-lg pa-2" color="surface">
                     <p class="text-caption">
                         服务端密钥
                     </p>

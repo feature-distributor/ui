@@ -5,7 +5,7 @@
             <v-toolbar class="px-2">
                 <Breadcrumbs />
                 <v-spacer></v-spacer>
-                <v-btn id="activator-create" size="small" variant="tonal" color="primary">新增开关</v-btn>
+                <v-btn size="small" variant="tonal" color="primary" @click="showCreateDialog = true">新增开关</v-btn>
             </v-toolbar>
             <v-card class="ma-2" elevated>
                 <v-card-text>
@@ -49,85 +49,17 @@
                         </template>
                     </v-tooltip>
                 </template>
-                <template v-slot:item.operation>
+                <template v-slot:item.operation="{ item }">
                     <div>
-                        <v-btn id="activator-edit" size="small" variant="text" color="primary">编辑</v-btn>
-                        <v-btn id="activator-delete" size="small" variant="text" color="primary">删除</v-btn>
+                        <v-btn size="small" variant="text" color="primary">编辑</v-btn>
+                        <v-btn size="small" variant="text" color="primary" @click="onDeleteToggle(item)">删除</v-btn>
                     </div>
                 </template>
             </v-data-table-server>
         </template>
     </v-data-iterator>
 
-    <v-dialog activator="#activator-create" max-width="500" persistent>
-        <template v-slot:default="{ isActive }">
-            <v-card title="新增开关">
-                <v-card-text>
-                    <v-text-field v-model="createProjectName" variant="underlined" :readonly="createLoading"
-                        color="primary" density="comfortable" :rules="createProjectNameRules" label="项目名称"
-                        placeholder="请输入开关标识"></v-text-field>
-
-                    <v-text-field v-model="createProjectKey" variant="underlined" :readonly="createLoading"
-                        color="primary" density="comfortable" :rules="createProjectKeyRules" label="项目唯一标识符"
-                        placeholder="请输入项目唯一标识符"></v-text-field>
-                </v-card-text>
-
-                <template v-slot:actions>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="isActive.value = false">
-                        取消
-                    </v-btn>
-                    <v-btn @click="isActive.value = !onCreateToggle()">
-                        创建
-                    </v-btn>
-                </template>
-            </v-card>
-        </template>
-    </v-dialog>
-    <v-dialog activator="#activator-edit" max-width="500" persistent>
-        <template v-slot:default="{ isActive }">
-            <v-card title="编辑开关">
-                <v-card-text>
-                    <v-text-field v-model="createProjectName" variant="underlined" :readonly="createLoading"
-                        color="primary" density="comfortable" :rules="createProjectNameRules" label="项目名称"
-                        placeholder="请输入项目名称"></v-text-field>
-
-                    <v-text-field v-model="createProjectKey" variant="underlined" :readonly="createLoading"
-                        color="primary" density="comfortable" :rules="createProjectKeyRules" label="项目唯一标识符"
-                        placeholder="请输入项目唯一标识符"></v-text-field>
-                </v-card-text>
-
-                <template v-slot:actions>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="isActive.value = false">
-                        取消
-                    </v-btn>
-                    <v-btn @click="isActive.value = !onEditToggle()">
-                        保存
-                    </v-btn>
-                </template>
-            </v-card>
-        </template>
-    </v-dialog>
-    <v-dialog activator="#activator-delete" max-width="500" persistent>
-        <template v-slot:default="{ isActive }">
-            <v-card title="是否删除开关？">
-                <v-card-text>
-                    开关删除之后无法恢复，请确认是否删除？
-                </v-card-text>
-
-                <template v-slot:actions>
-                    <v-spacer></v-spacer>
-                    <v-btn @click="isActive.value = false">
-                        取消
-                    </v-btn>
-                    <v-btn @click="isActive.value = !onDeleteToggle()">
-                        确认
-                    </v-btn>
-                </template>
-            </v-card>
-        </template>
-    </v-dialog>
+    <CreateToggleDialog v-if="showCreateDialog" :initShow="showCreateDialog" @onDismiss="showCreateDialog = false" />
 </template>
 
 <script>
@@ -153,8 +85,10 @@ export default {
         index: 1,
         size: 10,
         totalPages: 1,
-        createDialog: false,
-        createLoading: false,
+        dialogLoading: false,
+        editProject: null,
+        showCreateDialog: false,
+        showEditDialog: false,
     }),
     mounted() {
         getProject({
@@ -186,14 +120,19 @@ export default {
                 this.loading = false
             });
         },
-        onCreateToggle() {
-            return true;
-        },
-        onEditToggle() {
-            return true;
-        },
-        onDeleteToggle() {
-            return true;
+        onDeleteToggle(toggle) {
+            this.$confirm({
+                title: '删除开关',
+                message: '确定要删除开关 ' + toggle.title + ' 吗？',
+            }).then(() => {
+                // deleteProject({ id: project.id }).then(() => {
+                //     this.$toast.success('项目删除成功');
+                //     this.loadData();
+                // }).catch(error => {
+                //     this.$toast.error(error.error);
+                // });
+            }).catch(() => {
+            });
         },
     },
 }

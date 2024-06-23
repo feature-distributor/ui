@@ -5,14 +5,14 @@
         <v-form @submit.prevent="onSubmit">
             <v-text-field v-model="username" color="primary" density="comfortable"
                 prepend-inner-icon="fas fa-circle-user" variant="outlined" :readonly="loading" :rules="usernameRules"
-                label="用户名" placeholder="请输入用户名" clearable></v-text-field>
+                label="用户名" placeholder="请输入用户名"></v-text-field>
 
             <br>
 
             <v-text-field v-model="password" color="primary" density="comfortable" prepend-inner-icon="fas fa-lock"
                 variant="outlined" :readonly="loading" :rules="passwordRules" label="密码" placeholder="请输入密码"
                 :append-inner-icon="visible ? 'fas fa-eye-slash' : 'fas fa-eye'" :type="visible ? 'text' : 'password'"
-                @click:append-inner="visible = !visible" clearable></v-text-field>
+                @click:append-inner="visible = !visible"></v-text-field>
 
             <br>
 
