@@ -122,12 +122,12 @@ onMounted(() => {
             </a-button>
             <a-card
               v-if="!item.add" class="w-1/1 h-243px" :title="item.name" hoverable
-              @click="router.push(`/project/detail/${item.id}`)"
+              @click="router.push({ path: '/project/detail', query: { projectId: item.id } })"
             >
               <div>
                 <span>服务端密钥</span>
                 <a-tooltip placement="top" :title="tooltipText" arrow-point-at-center>
-                  <a-tag class="overflow" @click="doCopy(item.serverKey)" @mouseout="resetTooltip">
+                  <a-tag class="overflow" @click.stop="doCopy(item.serverKey)" @mouseout="resetTooltip">
                     <a-typography-text ellipsis>
                       {{ item.serverKey }}
                     </a-typography-text>
@@ -137,7 +137,7 @@ onMounted(() => {
               <div>
                 <span>客户端密钥</span>
                 <a-tooltip placement="top" :title="tooltipText" arrow-point-at-center>
-                  <a-tag class="overflow" @click="doCopy(item.serverKey)" @mouseout="resetTooltip">
+                  <a-tag class="overflow" @click.stop="doCopy(item.serverKey)" @mouseout="resetTooltip">
                     <a-typography-text ellipsis>
                       {{ item.clientKey }}
                     </a-typography-text>
@@ -145,8 +145,8 @@ onMounted(() => {
                 </a-tooltip>
               </div>
               <template #actions>
-                <EditOutlined @click="() => showEditModal(item)" />
-                <DeleteOutlined @click="() => showDeleteConfirm(item.id)" />
+                <EditOutlined @click.stop="() => showEditModal(item)" />
+                <DeleteOutlined @click.stop="() => showDeleteConfirm(item.id)" />
               </template>
             </a-card>
           </a-list-item>

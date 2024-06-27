@@ -1,9 +1,12 @@
 <script lang="ts" setup>
-import { CheckCircleOutlined, ClockCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { Modal } from 'ant-design-vue'
+import { CheckCircleOutlined, ClockCircleOutlined, DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { createVNode } from 'vue'
 import type { PaginationProps } from 'ant-design-vue'
 import CreateToggleModal from './components/create-toggle-modal.vue'
 import type { ToggleListResultModel, TogglePageParams } from '~@/api/toggle/list'
 import { getListApi } from '~@/api/toggle/list'
+import { deleteToggle } from '~@/api/toggle/delete'
 
 const messageApi = useMessage()
 const route = useRoute()
@@ -87,13 +90,29 @@ function showCreateModal() {
   createToggleModal.value?.open(projectId.value)
 }
 
+function showDeleteConfirm(toggleId: string) {
+  Modal.confirm({
+    title: '删除开关',
+    icon: createVNode(ExclamationCircleOutlined),
+    content: createVNode('div', {}, '确定要删除该开关吗?'),
+    cancelText: '取消',
+    okText: '确认',
+    async onOk() {
+      await deleteToggle(toggleId)
+      messageApi.success('开关删除成功')
+      loadData()
+    },
+    class: 'test',
+  })
+}
+
 async function onCreateToggleOk() {
   messageApi.success('开关创建成功')
   await loadData()
 }
 
 onMounted(() => {
-  projectId.value = route.params.projectId as string
+  projectId.value = route.query.projectId as string
   loadData()
 })
 </script>
@@ -154,9 +173,9 @@ onMounted(() => {
           </template>
           <template v-if="column?.dataIndex === 'action'">
             <div flex gap-2>
-              <a c-error>
+              <a-button type="text" c-error @click="() => showDeleteConfirm(record.id)">
                 删除
-              </a>
+              </a-button>
             </div>
           </template>
         </template>

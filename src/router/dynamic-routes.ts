@@ -58,7 +58,7 @@ export default [
         },
       },
       {
-        path: '/project/detail/:projectId',
+        path: '/project/detail',
         name: 'ProjectDetail',
         component: () => import('~/pages/project/detail.vue'),
         meta: {
@@ -66,7 +66,6 @@ export default [
           hideInMenu: true,
           parentKeys: ['/project/list'],
         },
-        props: true,
       },
     ],
   },
