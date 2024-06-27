@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Modal } from 'ant-design-vue'
-import { CheckCircleOutlined, ClockCircleOutlined, DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { CheckCircleOutlined, ClockCircleOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
 import type { PaginationProps } from 'ant-design-vue'
 import CreateToggleModal from './components/create-toggle-modal.vue'

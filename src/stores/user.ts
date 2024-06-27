@@ -12,6 +12,7 @@ export const useUserStore = defineStore('user', () => {
   const token = useAuthorization()
   const avatar = computed(() => '/logo.svg')
   const username = computed(() => userInfo.value?.username)
+  const roles = computed(() => ['admin'] as (string | number)[])
 
   const generateDynamicRoutes = async () => {
     const { menuData: treeMenuData, routeData } = await generateRoutes()
@@ -48,6 +49,7 @@ export const useUserStore = defineStore('user', () => {
 
   return {
     userInfo,
+    roles,
     getUserInfo,
     logout,
     routerData,
