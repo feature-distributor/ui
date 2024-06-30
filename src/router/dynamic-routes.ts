@@ -70,6 +70,26 @@ export default [
     ],
   },
   {
+    path: '/group',
+    redirect: '/group/list',
+    name: 'Group',
+    meta: {
+      title: '请求分组',
+      icon: 'ClusterOutlined',
+    },
+    component: basicRouteMap.RouteView,
+    children: [
+      {
+        path: '/group/list',
+        name: 'GroupList',
+        component: () => import('~/pages/group/list.vue'),
+        meta: {
+          title: '分组列表',
+        },
+      },
+    ],
+  },
+  {
     path: '/form',
     redirect: '/form/basic-form',
     name: 'Form',

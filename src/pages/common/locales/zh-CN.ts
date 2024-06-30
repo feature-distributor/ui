@@ -1,6 +1,5 @@
 export default {
   //  登录页面
-  'pages.login.accountLogin.errorMessage': '错误的用户名和密码',
   'pages.login.failure': '登录失败，请重试！',
   'pages.login.success': '登录成功！',
   'pages.login.username.placeholder': '请输入用户名',

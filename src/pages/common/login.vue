@@ -20,6 +20,7 @@ const { t } = useI18nLocale()
 const formRef = shallowRef()
 const submitLoading = shallowRef(false)
 const errorAlert = shallowRef(false)
+const errorMessage = ref('')
 const bubbleCanvas = ref<HTMLCanvasElement>()
 
 async function submit() {
@@ -41,9 +42,10 @@ async function submit() {
     })
   }
   catch (e) {
-    if (e instanceof AxiosError)
+    if (e instanceof AxiosError) {
+      errorMessage.value = e.response?.data.msg || '登录失败'
       errorAlert.value = true
-
+    }
     submitLoading.value = false
   }
 }
@@ -105,10 +107,7 @@ onBeforeUnmount(() => {
             </div>
             <a-form ref="formRef" :model="loginModel">
               <!-- 判断是否存在error -->
-              <a-alert
-                v-if="errorAlert" mb-24px :message="t('pages.login.accountLogin.errorMessage')" type="error"
-                show-icon
-              />
+              <a-alert v-if="errorAlert" mb-24px :message="errorMessage" type="error" show-icon />
               <template v-if="true">
                 <a-form-item name="username" :rules="[{ required: true, message: t('pages.login.username.required') }]">
                   <a-input

@@ -96,6 +96,15 @@ function errorHandler(error: AxiosError): Promise<any> {
         })
         .then(() => { })
     }
+    else if (status === 400) {
+      if (config.showMessage !== false) {
+        notification?.error({
+          message: '参数错误',
+          description: data?.msg || statusText,
+          duration: 3,
+        })
+      }
+    }
     else {
       if (config.showMessage !== false) {
         notification?.error({
