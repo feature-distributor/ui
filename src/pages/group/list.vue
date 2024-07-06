@@ -3,6 +3,7 @@ import { Modal } from 'ant-design-vue'
 import { CheckCircleOutlined, ClockCircleOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
 import type { PaginationProps } from 'ant-design-vue'
+import CreateGroupModal from './components/create-group-modal.vue'
 import type { GroupListResultModel, GroupPageParams } from '~@/api/group/list'
 import { getListApi } from '~@/api/group/list'
 import { deleteReqGroup } from '~@/api/group/delete'
@@ -33,7 +34,8 @@ const columns = shallowRef([
 ])
 
 const loading = shallowRef(false)
-const dataSource = shallowRef<ToggleListResultModel[]>([])
+const dataSource = shallowRef<GroupListResultModel[]>([])
+const createGroupModal = ref<InstanceType<typeof CreateGroupModal>>()
 
 const pagination = reactive<PaginationProps>({
   pageSize: 10,
@@ -58,7 +60,7 @@ async function loadData() {
     const params = {
       index: pagination.current,
       size: pagination.pageSize,
-    } as TogglePageParams
+    } as GroupPageParams
     const { data } = await getListApi(params)
     pagination.total = data?.total
     dataSource.value = data?.list ?? []
@@ -77,7 +79,7 @@ async function onSearch() {
 }
 
 function showCreateModal() {
-  // createToggleModal.value?.open(projectId.value)
+  createGroupModal.value?.open()
 }
 
 function showDeleteConfirm(groupId: string) {
@@ -171,6 +173,6 @@ onMounted(() => {
       </a-table>
     </a-card>
 
-    <!-- <CreateToggleModal ref="createToggleModal" @ok="onCreateReqGroupOk" /> -->
+    <CreateGroupModal ref="createGroupModal" @ok="onCreateReqGroupOk" />
   </page-container>
 </template>

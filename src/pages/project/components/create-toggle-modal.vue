@@ -166,7 +166,7 @@ defineExpose({
         <a-form-item v-bind="formItemLayoutWithOutLabel">
           <a-button type="dashed" style="width: 60%" @click="addValue">
             <PlusOutlined />
-            Add field
+            添加
           </a-button>
         </a-form-item>
         <a-form-item label="禁用时返回" name="disabledValue">
