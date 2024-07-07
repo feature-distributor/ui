@@ -4,6 +4,8 @@ import { ref } from 'vue'
 import type { FormInstance, SelectProps } from 'ant-design-vue'
 import { DownCircleOutlined, UpCircleOutlined } from '@ant-design/icons-vue'
 import OptionValue from './option-value.vue'
+import type { CreateGroupOptionParams, CreateReqGroupParams } from '~@/api/group/create'
+import { createReqGroup } from '~@/api/group/create'
 
 const emit = defineEmits(['ok'])
 
@@ -75,22 +77,26 @@ async function handleOk() {
   try {
     await formRef.value?.validate()
 
-    // const params = {
-    //   projectId: Number(projectId.value),
-    //   key: formData.value.key,
-    //   enabled: false,
-    //   title: formData.value.title,
-    //   description: formData.value.description,
-    //   valueType: formData.value.valueType,
-    //   values: formData.value.values.map((v, index) => ({
-    //     title: v.titleData,
-    //     value: v.valueData,
-    //     description: v.descriptionData,
-    //     default: false,
-    //     disabledValue: formData.value.disabledValue === index,
-    //   } as ValueParams)),
-    // } as SaveToggleParams
-    // await saveToggle(params)
+    const options = []
+    for (let index = 0; index < formData.value.options.length; index++) {
+      const element = formData.value.options[index]
+      for (const option of element) {
+        options.push({
+          index,
+          attrType: option.attrType,
+          attrName: option.attrName,
+          operationType: `${option.attrType}_${option.operationType}`,
+          attrValue: option.attrValue,
+        } as CreateGroupOptionParams)
+      }
+    }
+    const params = {
+      title: formData.value.title,
+      key: formData.value.key,
+      description: formData.value.description,
+      options,
+    } as CreateReqGroupParams
+    await createReqGroup(params)
 
     emit('ok')
     visible.value = false
