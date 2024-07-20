@@ -87,6 +87,16 @@ export default [
           title: '分组列表',
         },
       },
+      {
+        path: '/group/detail',
+        name: 'GroupDetail',
+        component: () => import('~/pages/group/detail.vue'),
+        meta: {
+          title: '分组详情',
+          hideInMenu: true,
+          parentKeys: ['/group/list'],
+        },
+      },
     ],
   },
   {

@@ -2,7 +2,7 @@
 import type { Rule } from 'ant-design-vue/es/form'
 import { ref } from 'vue'
 import type { FormInstance, SelectProps } from 'ant-design-vue'
-import { DownCircleOutlined, UpCircleOutlined } from '@ant-design/icons-vue'
+import { DeleteOutlined, DownCircleOutlined, UpCircleOutlined } from '@ant-design/icons-vue'
 import OptionValue from './option-value.vue'
 import type { CreateGroupOptionParams, CreateReqGroupParams } from '~@/api/group/create'
 import { createReqGroup } from '~@/api/group/create'
@@ -137,6 +137,10 @@ function downRuleGroup(index: number) {
   formData.value.options[index + 1] = temp
 }
 
+function deleteRuleGroup(index: number) {
+  formData.value.options.splice(index, 1)
+}
+
 function addRule(index: number, attrType: string) {
   formData.value.options[index].push({
     label: formData.value.options[index].length === 0 ? 'if' : 'and',
@@ -174,7 +178,7 @@ defineExpose({
               <OptionValue v-model="formData.options[index][i]" @delete-click="() => removeRule(index, i)" />
             </a-form-item>
             <a-row :guter="[8, 8]" justify="space-around" align="middle">
-              <a-col :span="22">
+              <a-col :span="21">
                 <a-select value="添加" :options="attrTypes" @change="(value) => addRule(index, value as string)" />
               </a-col>
               <a-col :span="1" align="center">
@@ -182,6 +186,9 @@ defineExpose({
               </a-col>
               <a-col :span="1" align="center">
                 <DownCircleOutlined class="dynamic-button" @click="() => downRuleGroup(index)" />
+              </a-col>
+              <a-col :span="1" align="center">
+                <DeleteOutlined class="dynamic-button" @click="() => deleteRuleGroup(index)" />
               </a-col>
             </a-row>
           </a-card>

@@ -1,6 +1,6 @@
 <script lang="ts" setup>
 import { Modal } from 'ant-design-vue'
-import { CheckCircleOutlined, ClockCircleOutlined, ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
+import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
 import type { PaginationProps } from 'ant-design-vue'
 import CreateGroupModal from './components/create-group-modal.vue'
@@ -9,6 +9,7 @@ import { getListApi } from '~@/api/group/list'
 import { deleteReqGroup } from '~@/api/group/delete'
 
 const messageApi = useMessage()
+const router = useRouter()
 
 const columns = shallowRef([
   {
@@ -140,22 +141,11 @@ onMounted(() => {
       </template>
       <a-table :loading="loading" :columns="columns" :data-source="dataSource" :pagination="pagination">
         <template #bodyCell="{ column, record }">
-          <template v-if="column?.dataIndex === 'name'">
-            {{ record.title }}
+          <template v-if="column?.dataIndex === 'title'">
+            <a href="#" @click="router.push({ path: '/group/detail', query: { groupId: record.groupId } })">{{ record.title }}</a>
           </template>
-          <template v-if="column?.dataIndex === 'enabled'">
-            <a-tag :color="record.enabled ? 'green' : 'red'">
-              <template #icon>
-                <CheckCircleOutlined v-if="record.enabled" />
-                <ClockCircleOutlined v-if="!record.enabled" />
-              </template>
-              {{ record.enabled ? '启用' : '禁用' }}
-            </a-tag>
-          </template>
-          <template v-if="column?.dataIndex === 'type'">
-            <a-tag>
-              {{ record.valueType }}
-            </a-tag>
+          <template v-if="column?.dataIndex === 'key'">
+            <a-tag>{{ record.key }}</a-tag>
           </template>
           <template v-if="column?.dataIndex === 'description'">
             <a-tooltip placement="top" :title="record.description" arrow-point-at-center>
@@ -164,6 +154,9 @@ onMounted(() => {
           </template>
           <template v-if="column?.dataIndex === 'action'">
             <div flex gap-2>
+              <a-button type="text">
+                编辑
+              </a-button>
               <a-button type="text" c-error @click="() => showDeleteConfirm(record.groupId)">
                 删除
               </a-button>
