@@ -122,7 +122,7 @@ onMounted(() => {
             </a-button>
             <a-card
               v-if="!item.add" class="w-1/1 h-243px" :title="item.name" hoverable
-              @click="router.push({ path: '/project/detail', query: { groupId: item.id } })"
+              @click="router.push({ path: '/project/detail', query: { projectId: item.id } })"
             >
               <div>
                 <span>服务端密钥</span>

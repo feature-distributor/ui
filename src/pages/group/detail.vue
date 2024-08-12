@@ -5,7 +5,6 @@ import OptionValue from './components/option-value.vue'
 import type { ReqGroupResultModel } from '~@/api/group/get'
 import { getReqGroup } from '~@/api/group/get'
 
-const messageApi = useMessage()
 const route = useRoute()
 
 interface OptionState {
@@ -96,6 +95,9 @@ onMounted(() => {
   <page-container>
     <a-card :bordered="false">
       <a-descriptions title="请求分组信息">
+        <a-descriptions-item label="分组名称">
+          {{ viewData?.title }}
+        </a-descriptions-item>
         <a-descriptions-item label="标识">
           {{ viewData?.key }}
         </a-descriptions-item>

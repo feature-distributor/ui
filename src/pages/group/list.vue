@@ -4,7 +4,8 @@ import { ExclamationCircleOutlined, PlusOutlined } from '@ant-design/icons-vue'
 import { createVNode } from 'vue'
 import type { PaginationProps } from 'ant-design-vue'
 import CreateGroupModal from './components/create-group-modal.vue'
-import type { GroupListResultModel, GroupPageParams } from '~@/api/group/list'
+import UpdateGroupModal from './components/update-group-modal.vue'
+import type { GroupListResultModel, GroupListTableParams, GroupPageParams } from '~@/api/group/list'
 import { getListApi } from '~@/api/group/list'
 import { deleteReqGroup } from '~@/api/group/delete'
 
@@ -36,7 +37,12 @@ const columns = shallowRef([
 
 const loading = shallowRef(false)
 const dataSource = shallowRef<GroupListResultModel[]>([])
+const formModel = reactive<GroupListTableParams>({
+  key: '',
+  keywords: '',
+})
 const createGroupModal = ref<InstanceType<typeof CreateGroupModal>>()
+const updateGroupModal = ref<InstanceType<typeof UpdateGroupModal>>()
 
 const pagination = reactive<PaginationProps>({
   pageSize: 10,
@@ -62,7 +68,7 @@ async function loadData() {
       index: pagination.current,
       size: pagination.pageSize,
     } as GroupPageParams
-    const { data } = await getListApi(params)
+    const { data } = await getListApi(params, formModel)
     pagination.total = data?.total
     dataSource.value = data?.list ?? []
   }
@@ -79,8 +85,24 @@ async function onSearch() {
   await loadData()
 }
 
+async function onReset() {
+  // 清空所有参数重新请求
+  formModel.key = ''
+  formModel.keywords = ''
+  await loadData()
+}
+
 function showCreateModal() {
   createGroupModal.value?.open()
+}
+
+function showUpdateModal(model: GroupListResultModel) {
+  updateGroupModal.value?.open({
+    groupId: model.groupId,
+    title: model.title,
+    key: model.key,
+    description: model.description,
+  })
 }
 
 function showDeleteConfirm(groupId: string) {
@@ -104,6 +126,11 @@ async function onCreateReqGroupOk() {
   await loadData()
 }
 
+async function onUpdateReqGroupOk() {
+  messageApi.success('请求分组更新成功')
+  await loadData()
+}
+
 onMounted(() => {
   loadData()
 })
@@ -112,14 +139,26 @@ onMounted(() => {
 <template>
   <page-container>
     <a-card mb-4>
-      <a-form :label-col="{ span: 7 }">
+      <a-form :label-col="{ span: 7 }" :model="formModel">
+        <a-row :gutter="[15, 0]">
+          <a-col :span="8">
+            <a-form-item name="desc" label="标识">
+              <a-input v-model:value="formModel.key" />
+            </a-form-item>
+          </a-col>
+          <a-col :span="8">
+            <a-form-item name="name" label="分组名称">
+              <a-input v-model:value="formModel.keywords" />
+            </a-form-item>
+          </a-col>
+        </a-row>
         <a-row :span="24" style="text-align: right">
           <a-col :span="24">
             <a-space flex justify-end w-full>
               <a-button :loading="loading" type="primary" @click="onSearch">
                 查询
               </a-button>
-              <a-button :loading="loading">
+              <a-button :loading="loading" @click="onReset">
                 重置
               </a-button>
             </a-space>
@@ -142,7 +181,8 @@ onMounted(() => {
       <a-table :loading="loading" :columns="columns" :data-source="dataSource" :pagination="pagination">
         <template #bodyCell="{ column, record }">
           <template v-if="column?.dataIndex === 'title'">
-            <a href="#" @click="router.push({ path: '/group/detail', query: { groupId: record.groupId } })">{{ record.title }}</a>
+            <a href="#" @click="router.push({ path: '/group/detail', query: { groupId: record.groupId } })">{{
+              record.title }}</a>
           </template>
           <template v-if="column?.dataIndex === 'key'">
             <a-tag>{{ record.key }}</a-tag>
@@ -154,8 +194,16 @@ onMounted(() => {
           </template>
           <template v-if="column?.dataIndex === 'action'">
             <div flex gap-2>
-              <a-button type="text">
-                编辑
+              <a-button
+                type="text" @click="() => showUpdateModal({
+                  groupId: record.groupId,
+                  title: record.title,
+                  key: record.key,
+                  description: record.description,
+                }) "
+              >
+                编
+                辑
               </a-button>
               <a-button type="text" c-error @click="() => showDeleteConfirm(record.groupId)">
                 删除
@@ -167,5 +215,6 @@ onMounted(() => {
     </a-card>
 
     <CreateGroupModal ref="createGroupModal" @ok="onCreateReqGroupOk" />
+    <UpdateGroupModal ref="updateGroupModal" @ok="onUpdateReqGroupOk" />
   </page-container>
 </template>

@@ -15,6 +15,11 @@ export interface GroupListResultModel {
   description: string
 }
 
-export async function getListApi(params: GroupPageParams) {
-  return useGet<GroupPageModel, GroupPageParams>(`/req/group/list/v1?index=${params.index}&size=${params.size}`)
+export interface GroupListTableParams {
+  key: string
+  keywords: string
+}
+
+export async function getListApi(params: GroupPageParams, body: GroupListTableParams) {
+  return usePost<GroupPageModel, GroupListTableParams>(`/req/group/list/v1?index=${params.index}&size=${params.size}`, body)
 }
