@@ -181,7 +181,7 @@ onMounted(() => {
       <a-table :loading="loading" :columns="columns" :data-source="dataSource" :pagination="pagination">
         <template #bodyCell="{ column, record }">
           <template v-if="column?.dataIndex === 'title'">
-            <a href="#" @click="router.push({ path: '/group/detail', query: { groupId: record.groupId } })">{{
+            <a @click="router.push({ path: '/group/detail', query: { groupId: record.groupId } })">{{
               record.title }}</a>
           </template>
           <template v-if="column?.dataIndex === 'key'">
