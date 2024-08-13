@@ -4,7 +4,10 @@ import { DeleteOutlined, DownCircleOutlined, PlusOutlined, UpCircleOutlined } fr
 import OptionValue from './components/option-value.vue'
 import type { ReqGroupResultModel } from '~@/api/group/get'
 import { getReqGroup } from '~@/api/group/get'
+import type { UpdateGroupOptionParams, UpdateReqGroupOptionParams } from '~@/api/group/update_option'
+import { updateReqGroupOption } from '~@/api/group/update_option'
 
+const messageApi = useMessage()
 const route = useRoute()
 
 interface OptionState {
@@ -85,6 +88,36 @@ function addRule(index: number, attrType: string) {
   })
 }
 
+async function handleOk() {
+  try {
+    const options = []
+    for (let index = 0; index < optionData.value.length; index++) {
+      const element = optionData.value[index]
+      for (const option of element) {
+        options.push({
+          index,
+          attrType: option.attrType,
+          attrName: option.attrName,
+          operationType: `${option.attrType}_${option.operationType}`,
+          attrValue: option.attrValue,
+        } as UpdateGroupOptionParams)
+      }
+    }
+    const groupId = reqGroupId.value
+    const gId = +groupId
+    const params = {
+      groupId: gId,
+      options,
+    } as UpdateReqGroupOptionParams
+    await updateReqGroupOption(params)
+    messageApi.success('请求分组更新成功')
+    await loadData()
+  }
+  catch (errorInfo: any) {
+    console.log('Form Validate Failed:', errorInfo)
+  }
+}
+
 onMounted(() => {
   reqGroupId.value = route.query.groupId as string
   loadData()
@@ -139,7 +172,7 @@ onMounted(() => {
           </a-button>
         </a-descriptions-item>
         <a-descriptions-item>
-          <a-button type="primary">
+          <a-button type="primary" @click="handleOk">
             保存
           </a-button>
         </a-descriptions-item>
